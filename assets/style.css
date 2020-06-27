@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --dark-color: #0040ff;
+    --light-color: #99ccff;
+    --correct-color: #009933;
+    --wrong-color: #ff3300;
+}
+
+/* styles for header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: lighter;
+    font-style: normal;
+}
+
+.high-scores {
+    color: var(--light-color);
+}
+
+main {
+    display: flex;
+    margin: 20px 450px;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.container p {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.container button {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 10px 20px;
+    background-color: var(--dark-color);
+    color: white;
+}
