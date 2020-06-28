@@ -26,7 +26,7 @@ header {
 
 main {
     display: flex;
-    margin: 20px 350px;
+    margin: 20px 200px;
     justify-content: center;
     align-items: center;
 }
@@ -57,4 +57,20 @@ h1 {
     padding: 10px 20px;
     background-color: var(--dark-color);
     color: white;
+    display: list-item;
+    text-align: left;
+    margin: 5px auto;
+}
+
+.questions button {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 10px 20px;
+    background-color: var(--dark-color);
+    color: white;
+    display: list-item;
+    margin: 5px 5px;
 }
