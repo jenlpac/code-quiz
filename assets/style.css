@@ -74,3 +74,11 @@ h1 {
     display: list-item;
     margin: 5px 5px;
 }
+
+.response {
+    margin: 25px auto;
+    border-top: 2px solid var(--light-color);
+    border-color: var(--light-color);
+    color: var(--light-color);
+}
+

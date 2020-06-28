@@ -6,9 +6,9 @@ var timerEl = document.querySelector("#time");
 var questionPageEl = document.querySelector("#questions");
 var answerChoicesEl = document.querySelector("#choices");
 var responseEl = document.querySelector("#response");
-
-
-
+var finalScoreEl = document.querySelector("#final-score");
+var timeStart = 75;
+var timer = "";
 
 // create questions array
 var questionsArray = [
@@ -55,7 +55,6 @@ var questionsArray = [
 ]
 
 
-// create necessary elements
 // start Quiz and timer
 var startQuiz = function() {
     // remove start page
@@ -63,68 +62,96 @@ var startQuiz = function() {
     mainPageEl.removeChild(startPageEl);
 
     // start timer
-    var timeStart = 75;
-    var timer = setInterval(function() {
+    timer = setInterval(function() {
         timerEl.textContent = timeStart;
-        // console.log("The time has started at " + timeStart);
         timeStart--;
+        // end quiz if timer reaches 0
         if(timeStart === 0) {
-            
             clearInterval(timer);
             timerEl.textContent = timeStart;
-            
+            highScore();
         }
     }, 1000);
-
+    // start questions
     askQuestion();
 };
 
+// var for response
+var response = "";
+
+var answerSelection = function(event) {
+    // create event.target variable
+    var answer = event.target;
+    console.log(answer);
+
+    // if answer is correct
+    if (answer.textContent === questionsArray[i].correct) {
+        response = "Correct!";
+    }
+    // if answer is wrong
+    else {
+        response = "Wrong!";
+        timeStart = timeStart - 10;
+        console.log("The time is now " + timeStart);
+    }
+
+    i++;
+    askQuestion();
+};
+
+
+// var saved to ask question
 var question = document.createElement("h1");
 question.className = "question";
 var i = 0;
 
 var askQuestion = function() {
     // show question and answers on the page
+    if(i <= 4) {
+        question.textContent = questionsArray[i].q;
+        questionPageEl.appendChild(question, answerChoicesEl);
 
-    question.textContent = questionsArray[i].q;
-    questionPageEl.appendChild(question);
-
-    // add answer buttons
-    answerChoicesEl.innerHTML = "<button class='btn'>" + questionsArray[i].a1
-        + "</button><button class='btn'>" + questionsArray[i].a2
-        + "</button><button class='btn'>" + questionsArray[i].a3
-        + "</button><button class='btn'>" + questionsArray[i].a4
-        + "</button>";
+        // add answer buttons
+        answerChoicesEl.innerHTML = "<button class='btn'>" + questionsArray[i].a1
+            + "</button><button class='btn'>" + questionsArray[i].a2
+            + "</button><button class='btn'>" + questionsArray[i].a3
+            + "</button><button class='btn'>" + questionsArray[i].a4
+            + "</button>";
     
-    if(i>=1) {
-        // show right or wrong response
-        
-        
-        
-
+        if(i>=1) {
+            // show right or wrong response from previous question
+            console.log(response);
+            responseEl.textContent = response;
+        }
     }
-             
-}
-
-
-var answerSelection = function(event) {
-    var answer = event.target;
-
-    if (answer.textContent === questionsArray[i].correct) {
-
+    else {
+        highScore();
     }
-
-
-    console.log("you answered")
-    i++;
-    askQuestion();
 };
 
 
 
+//var endQuiz = document.createElement("h1");
+
+var highScore = function() {
+    console.log("Quiz is over!");
+    clearInterval(timer);
+
+    questionPageEl.removeChild(question);
+    answerChoicesEl.innerHTML = "";
+    responseEl.textContent = "";
+
+    //mainPageEl.removeChild(question);
+    
+
+    finalScoreEl.innerHTML = "<h3>All Done! Your final score is:  " + timeStart + ".</h3><label for='initials'>Enter Initials: </label><input type='text' name='initials'>";
+
+    //finalScoreEl.innerHTML = "<label for='initials'>Enter Initials: </label><input type='text' name='initials'>";
+}
 
 
 // add event listeners
 // startQuiz function when start quiz button is selected
 startQuizEl.addEventListener("click", startQuiz);
+// run answerSelection function when answer choice is selected
 answerChoicesEl.addEventListener("click", answerSelection);
