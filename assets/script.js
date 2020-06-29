@@ -6,7 +6,9 @@ var timerEl = document.querySelector("#time");
 var questionPageEl = document.querySelector("#questions");
 var answerChoicesEl = document.querySelector("#choices");
 var responseEl = document.querySelector("#response");
+
 var finalScoreEl = document.querySelector("#final-score");
+
 var timeStart = 75;
 var timer = "";
 
@@ -57,10 +59,6 @@ var questionsArray = [
 
 // start Quiz and timer
 var startQuiz = function() {
-    // remove start page
-    console.log("The quiz has started");
-    mainPageEl.removeChild(startPageEl);
-
     // start timer
     timer = setInterval(function() {
         timerEl.textContent = timeStart;
@@ -69,9 +67,14 @@ var startQuiz = function() {
         if(timeStart === 0) {
             clearInterval(timer);
             timerEl.textContent = timeStart;
-            highScore();
+            endQuiz();
         }
     }, 1000);
+
+    // remove start page
+    console.log("The quiz has started");
+    mainPageEl.removeChild(startPageEl);
+    
     // start questions
     askQuestion();
 };
@@ -92,7 +95,6 @@ var answerSelection = function(event) {
     else {
         response = "Wrong!";
         timeStart = timeStart - 10;
-        console.log("The time is now " + timeStart);
     }
 
     i++;
@@ -125,28 +127,34 @@ var askQuestion = function() {
         }
     }
     else {
-        highScore();
+        endQuiz();
     }
 };
 
+// create submit button for initials
+var submitInitEl = document.createElement("button");
+    submitInitEl.textContent = "Submit";
 
-
-//var endQuiz = document.createElement("h1");
-
-var highScore = function() {
-    console.log("Quiz is over!");
+var endQuiz = function() {
+    // stop timer
     clearInterval(timer);
-
+    timerEl.textContent = timeStart;
+    // clear questions
     questionPageEl.removeChild(question);
     answerChoicesEl.innerHTML = "";
-    responseEl.textContent = "";
+    // include response from final question
+    responseEl.textContent = response;
 
-    //mainPageEl.removeChild(question);
+    finalScoreEl.innerHTML = "<h2>All Done! Your final score is:  " + timeStart + ".</h2><br><br><div><label for='initials'>Enter Initials: </label><input type='text' name='initials' id='initials' required minlength='2' maxlength='2' /></div>";
     
+    finalScoreEl.appendChild(submitInitEl);
+}
 
-    finalScoreEl.innerHTML = "<h3>All Done! Your final score is:  " + timeStart + ".</h3><label for='initials'>Enter Initials: </label><input type='text' name='initials'>";
-
-    //finalScoreEl.innerHTML = "<label for='initials'>Enter Initials: </label><input type='text' name='initials'>";
+var highScore = function(event) {
+    var submit = event.target
+    console.log("Your high score is " + timeStart);
+    finalScoreEl.textContent="";
+    responseEl.textContent = "";
 }
 
 
@@ -155,3 +163,5 @@ var highScore = function() {
 startQuizEl.addEventListener("click", startQuiz);
 // run answerSelection function when answer choice is selected
 answerChoicesEl.addEventListener("click", answerSelection);
+// submit initials
+submitInitEl.addEventListener("click", highScore);
