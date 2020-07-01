@@ -8,9 +8,20 @@ var answerChoicesEl = document.querySelector("#choices");
 var responseEl = document.querySelector("#response");
 
 var finalScoreEl = document.querySelector("#final-score");
+var listEl = document.querySelector("#high-score");
 
 var timeStart = 75;
 var timer = "";
+highScoreCounter = 0;
+
+var highScoreArr = [];
+
+//need to save variables as:
+//var highScoreInit = {
+//    id:
+//    name: (initials)
+//    score:
+//}
 
 // create questions array
 var questionsArray = [
@@ -88,7 +99,7 @@ var answerSelection = function(event) {
     console.log(answer);
 
     // if answer is correct
-    if (answer.textContent === questionsArray[i].correct) {
+    if (answer.textContent === questionsArray[count].correct) {
         response = "Correct!";
     }
     // if answer is wrong
@@ -97,30 +108,30 @@ var answerSelection = function(event) {
         timeStart = timeStart - 10;
     }
 
-    i++;
+    count++;
     askQuestion();
 };
 
 
 // var saved to ask question
 var question = document.createElement("h1");
-question.className = "question";
-var i = 0;
+question.className = "questions";
+var count = 0;
 
 var askQuestion = function() {
     // show question and answers on the page
-    if(i <= 4) {
-        question.textContent = questionsArray[i].q;
+    if(count <= 4) {
+        question.textContent = questionsArray[count].q;
         questionPageEl.appendChild(question, answerChoicesEl);
 
         // add answer buttons
-        answerChoicesEl.innerHTML = "<button class='btn'>" + questionsArray[i].a1
-            + "</button><button class='btn'>" + questionsArray[i].a2
-            + "</button><button class='btn'>" + questionsArray[i].a3
-            + "</button><button class='btn'>" + questionsArray[i].a4
+        answerChoicesEl.innerHTML = "<button class='btn'>" + questionsArray[count].a1
+            + "</button><button class='btn'>" + questionsArray[count].a2
+            + "</button><button class='btn'>" + questionsArray[count].a3
+            + "</button><button class='btn'>" + questionsArray[count].a4
             + "</button>";
     
-        if(i>=1) {
+        if(count>=1) {
             // show right or wrong response from previous question
             console.log(response);
             responseEl.textContent = response;
@@ -133,7 +144,7 @@ var askQuestion = function() {
 
 // create submit button for initials
 var submitInitEl = document.createElement("button");
-    submitInitEl.textContent = "Submit";
+submitInitEl.textContent = "Submit";
 
 var endQuiz = function() {
     // stop timer
@@ -145,16 +156,53 @@ var endQuiz = function() {
     // include response from final question
     responseEl.textContent = response;
 
-    finalScoreEl.innerHTML = "<h2>All Done! Your final score is:  " + timeStart + ".</h2><br><br><div><label for='initials'>Enter Initials: </label><input type='text' name='initials' id='initials' required minlength='2' maxlength='2' /></div>";
+    finalScoreEl.innerHTML = "<h2>All Done! Your final score is " + timeStart + ".</h2><br><br><div class='init-line'><label for='initials'>Enter Initials: </label><input type='text' name='initials' id='initials' required minlength='2' maxlength='2' /></div>";
     
     finalScoreEl.appendChild(submitInitEl);
 }
 
-var highScore = function(event) {
-    var submit = event.target
-    console.log("Your high score is " + timeStart);
-    finalScoreEl.textContent="";
+var scoreListEl = document.createElement("li");
+scoreListEl.classname = "score-list";
+scoreListEl.textContent = "hello" + "" + "goodbye"
+
+var saveHighScore = function() {
+    var initialsInput = document.querySelector("input").value;
+    
+    // Save initials and score to an object
+    var highScoreObj = {
+        initials: initialsInput,
+        score: timeStart
+    }
+    console.log(highScoreObj);
+    console.log(highScoreObj.initials);
+
+    highScoreObj.id = highScoreCounter;
+    highScoreArr.push(highScoreObj);
+
+    console.log(highScoreObj);
+
+    localStorage.setItem("highScoreArr",JSON.stringify(highScoreArr));
+
+    highScoreCounter++;
+
+    highScorePage();
+};
+
+var goBack = document.createElement("button");
+goBack.classname = "btn";
+goBack.textContent = "Go Back";
+
+var clearScore = document.createElement("button");
+clearScore.classname = "btn";
+clearScore.textContent = "Clear All Scores";
+
+var highScorePage = function() {
+
+    finalScoreEl.innerHTML = "<h2>High Scores</h2>";
     responseEl.textContent = "";
+    listEl.appendChild(scoreListEl);
+    responseEl.appendChild(goBack);
+    responseEl.appendChild(clearScore);
 }
 
 
@@ -164,4 +212,4 @@ startQuizEl.addEventListener("click", startQuiz);
 // run answerSelection function when answer choice is selected
 answerChoicesEl.addEventListener("click", answerSelection);
 // submit initials
-submitInitEl.addEventListener("click", highScore);
+submitInitEl.addEventListener("click", saveHighScore);

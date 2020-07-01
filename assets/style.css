@@ -27,6 +27,7 @@ header {
 main {
     /*display: flex;*/
     margin: 20px 400px;
+    border: none;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -39,6 +40,7 @@ h1 {
 }
 
 .container {
+    border: none;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -85,21 +87,38 @@ button:focus {
     justify-items: center;
     text-align: start;
     margin: 20px auto;
-    border-top: 2px solid var(--light-color);
+    /*border-top: 2px solid var(--light-color);*/
     border-color: var(--light-color);
     color: var(--light-color);
     padding: 20px 5px;
 }
 
 .final-score {
-    display: block-item;
+    margin: 20px auto;
     justify-content: center;
     text-align: center;
 }
 
 #initials {
-    display: in-line;
+    display: inline-flex;
     font-size: 16px;
     width: 50%;
+}
 
+.init-line {
+    padding: 10px;
+}
+
+.high-score {
+    display: block;
+}
+
+.score-list {
+    display: block;
+    list-style: none;
+    margin: 20px auto;
+    border: 1px solid var(--light-color);
+    background-color: var(--light-color);
+    font-size: 24px;
+    font-weight: bold;
 }
