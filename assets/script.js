@@ -6,6 +6,7 @@ var timerEl = document.querySelector("#time");
 var questionPageEl = document.querySelector("#questions");
 var answerChoicesEl = document.querySelector("#choices");
 var responseEl = document.querySelector("#response");
+var highScorePg = document.querySelector("#high-score-pg");
 
 var finalScoreEl = document.querySelector("#final-score");
 var listEl = document.querySelector("#high-score");
@@ -19,12 +20,6 @@ highScoreCounter = 0;
 
 var highScoreArr = [];
 
-//need to save variables as:
-//var highScoreInit = {
-//    id:
-//    name: (initials)
-//    score:
-//}
 
 // create questions array
 var questionsArray = [
@@ -73,10 +68,11 @@ var questionsArray = [
 var startPage = function() {
     mainPageEl.prepend(startPageEl);
     finalScoreEl.textContent = "";
-    listEl.removeChild(scoreListEl);
+    listEl.textContent = "";
     responseEl.removeChild(goBackEl);
     responseEl.removeChild(clearScoreEl);
     count=0;
+    timeStart=75;
 }
 
 // start Quiz and timer
@@ -174,9 +170,12 @@ var endQuiz = function() {
     finalScoreEl.appendChild(submitInitEl);
 }
 
-var scoreListEl = document.createElement("li");
-scoreListEl.classname = "score-list";
-scoreListEl.textContent = "hello " + "&" + " goodbye"
+//var scoreListEl = document.createElement("li");
+//scoreListEl.classname = "score-list";
+//scoreListEl.textContent = "Here's where the list will go"
+
+//var scoreListEl = localStorage.getItem("highScoreArr");
+//scoreListEl.classname = "score-list";
 
 var saveHighScore = function() {
     var initialsInput = document.querySelector("input").value;
@@ -210,11 +209,26 @@ var clearScoreEl = document.createElement("button");
 clearScoreEl.classname = "clear";
 clearScoreEl.textContent = "Clear All Scores";
 
+
+var scoreList = document.createElement("li");
+scoreList.className = "score-list";
+
 var highScorePage = function() {
 
     finalScoreEl.innerHTML = "<h2>High Scores</h2>";
     responseEl.textContent = "";
-    listEl.appendChild(scoreListEl);
+    
+    var highScores = localStorage.getItem("highScoreArr");
+    //scoreList.className = "score-list";
+    highScores = JSON.parse(highScores);
+    
+    for (var i = 0; i < highScores.length; i++) {
+        var scoreListItem = document.createElement("li");
+        //scoreListItem.className = "score-list";
+        scoreListItem.textContent = highScores[i].initials + " scored: " + highScores[i].score;
+        listEl.appendChild(scoreListItem);
+    }
+
     responseEl.appendChild(goBackEl);
     responseEl.appendChild(clearScoreEl);
     
@@ -223,6 +237,11 @@ var highScorePage = function() {
 var clearScore = function() {
     highScoreArr = [];
     console.log(highScoreArr);
+}
+
+var highScoreSelect = function() {
+    mainPageEl.removeChild(startPageEl);
+    highScorePage();
 }
 
 
@@ -235,3 +254,4 @@ answerChoicesEl.addEventListener("click", answerSelection);
 submitInitEl.addEventListener("click", saveHighScore);
 goBackEl.addEventListener("click", startPage);
 clearScoreEl.addEventListener("click", clearScore);
+highScorePg.addEventListener("click", highScoreSelect);
