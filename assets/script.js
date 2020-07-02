@@ -1,7 +1,7 @@
 // set variables for each element in use
 var startPageEl = document.querySelector("#start-page");
 var startQuizEl = document.querySelector("#start");
-var mainPageEl = document.querySelector("main");
+var mainPageEl = document.querySelector("#full-page");
 var timerEl = document.querySelector("#time");
 var questionPageEl = document.querySelector("#questions");
 var answerChoicesEl = document.querySelector("#choices");
@@ -9,6 +9,9 @@ var responseEl = document.querySelector("#response");
 
 var finalScoreEl = document.querySelector("#final-score");
 var listEl = document.querySelector("#high-score");
+
+var backBtnEl = document.querySelector(".back");
+var clearBtnEl = document.querySelector(".clear");
 
 var timeStart = 75;
 var timer = "";
@@ -67,6 +70,14 @@ var questionsArray = [
     }
 ]
 
+var startPage = function() {
+    mainPageEl.prepend(startPageEl);
+    finalScoreEl.textContent = "";
+    listEl.removeChild(scoreListEl);
+    responseEl.removeChild(goBackEl);
+    responseEl.removeChild(clearScoreEl);
+    count=0;
+}
 
 // start Quiz and timer
 var startQuiz = function() {
@@ -83,7 +94,7 @@ var startQuiz = function() {
     }, 1000);
 
     // remove start page
-    console.log("The quiz has started");
+   // console.log("The quiz has started");
     mainPageEl.removeChild(startPageEl);
     
     // start questions
@@ -119,6 +130,8 @@ question.className = "questions";
 var count = 0;
 
 var askQuestion = function() {
+    console.log("The quiz has started");
+    //mainPageEl.removeChild(startPageEl);
     // show question and answers on the page
     if(count <= 4) {
         question.textContent = questionsArray[count].q;
@@ -163,7 +176,7 @@ var endQuiz = function() {
 
 var scoreListEl = document.createElement("li");
 scoreListEl.classname = "score-list";
-scoreListEl.textContent = "hello" + "" + "goodbye"
+scoreListEl.textContent = "hello " + "&" + " goodbye"
 
 var saveHighScore = function() {
     var initialsInput = document.querySelector("input").value;
@@ -180,6 +193,7 @@ var saveHighScore = function() {
     highScoreArr.push(highScoreObj);
 
     console.log(highScoreObj);
+    console.log(highScoreArr);
 
     localStorage.setItem("highScoreArr",JSON.stringify(highScoreArr));
 
@@ -188,21 +202,27 @@ var saveHighScore = function() {
     highScorePage();
 };
 
-var goBack = document.createElement("button");
-goBack.classname = "btn";
-goBack.textContent = "Go Back";
+var goBackEl = document.createElement("button");
+goBackEl.classname = "back";
+goBackEl.textContent = "Go Back";
 
-var clearScore = document.createElement("button");
-clearScore.classname = "btn";
-clearScore.textContent = "Clear All Scores";
+var clearScoreEl = document.createElement("button");
+clearScoreEl.classname = "clear";
+clearScoreEl.textContent = "Clear All Scores";
 
 var highScorePage = function() {
 
     finalScoreEl.innerHTML = "<h2>High Scores</h2>";
     responseEl.textContent = "";
     listEl.appendChild(scoreListEl);
-    responseEl.appendChild(goBack);
-    responseEl.appendChild(clearScore);
+    responseEl.appendChild(goBackEl);
+    responseEl.appendChild(clearScoreEl);
+    
+}
+
+var clearScore = function() {
+    highScoreArr = [];
+    console.log(highScoreArr);
 }
 
 
@@ -213,3 +233,5 @@ startQuizEl.addEventListener("click", startQuiz);
 answerChoicesEl.addEventListener("click", answerSelection);
 // submit initials
 submitInitEl.addEventListener("click", saveHighScore);
+goBackEl.addEventListener("click", startPage);
+clearScoreEl.addEventListener("click", clearScore);
